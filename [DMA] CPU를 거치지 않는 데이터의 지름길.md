@@ -29,12 +29,7 @@ DMA 전송의 핵심에는 `DMAC(DMA Controller)`라는 전용 하드웨어가 �
 4. DMAC이 소스에서 목적지로 데이터를 직접 옮깁니다. 이 구간에서 CPU는 관여하지 않습니다.
 5. 전송이 완료되면 DMAC이 `인터럽트(Interrupt)`를 발생시켜 CPU에게 작업이 끝났음을 알립니다.
 
-```
-[이미지 설명: CPU, DMA 컨트롤러, 메모리, 디스크 컨트롤러가 시스템 버스로 연결된 구조도.
-CPU에서 DMAC으로 "전송 명령" 화살표가 나가고, 이후 DMAC과 디스크, DMAC과 메모리 사이에
-굵은 화살표로 실제 데이터 흐름이 표시됨. CPU에서 메모리로 가는 직접 화살표는 없으며,
-전송 완료 후 DMAC에서 CPU로 "인터럽트" 점선 화살표가 표시됨.]
-```
+<img width="2720" height="1280" alt="dma_architecture_diagram" src="https://github.com/user-attachments/assets/b1aa9d9c-d957-42ec-95e7-11c558fe16ce" />
 
 ### 전송 모드
 
@@ -74,6 +69,9 @@ msinfo32
 ```
 
 `msinfo32`를 실행한 뒤 시스템 요약 화면에서 커널 DMA 보호 항목이 켬으로 표시되는지 확인하면 됩니다. 이 값이 꺼져 있다면 해당 하드웨어가 IOMMU 기반의 DMA 격리를 지원하지 않거나 BIOS/UEFI에서 VT-d 혹은 AMD-Vi가 비활성화되어 있을 가능성이 큽니다.
+
+<img width="1940" height="834" alt="image" src="https://github.com/user-attachments/assets/1340ad7b-8f7c-49fc-920f-4eabc415b64e" />
+
 
 Thunderbolt 장치의 경우, 최신 운영체제는 `Kernel DMA Protection` 기능을 통해 사용자가 명시적으로 신뢰하지 않은 장치의 DMA 요청을 부팅 초기부터 차단하도록 기본 정책을 강화하고 있습니다. Windows에서는 `설정 > 개인 정보 및 보안 > Windows 보안 > 디바이스 보안 > 코어 격리` 또는 시스템 정보 앱의 `커널 DMA 보호` 항목으로, macOS에서는 시스템 정보의 `Thunderbolt/USB4` 보안 설정으로 이 상태를 확인할 수 있습니다.
 
@@ -115,13 +113,8 @@ DMA 치트는 이 전제 자체를 깨버립니다. 치트 로직을 대상 PC�
 - **읽기와 쓰기 모두 가능**: 캐릭터 좌표나 체력 같은 값을 실시간으로 읽어 화면에 표시하는 것(월핵, ESP)뿐 아니라, 특정 조건에서는 메모리 값을 직접 조작하는 것도 물리적으로는 가능합니다.
 - **낮은 지연시간**: 고속 PCIe 버스를 통해 데이터를 가져오기 때문에, 별도 프로세스에서 폴링하는 소프트웨어 방식보다 지연시간이 짧아 실시간성이 중요한 에임봇류 치트에도 활용됩니다.
 
-```
-[이미지 설명: 대상 PC와 공격자의 보조 PC 두 대가 그려져 있고, 대상 PC의 PCIe 슬롯에
-FPGA 캡처 카드가 꽂혀 있음. 카드에서 케이블이 보조 PC로 연결되어 있고, 대상 PC 내부에는
-게임 프로세스와 커널 안티치트 드라이버가 표시되어 있지만 카드나 케이블과는 아무 연결선이
-없음(안티치트의 탐지 범위 밖에 있음을 강조). 보조 PC 쪽에는 "메모리 덤프 수신 및 표시"라는
-설명과 함께 캐릭터 좌표, 체력 등이 오버레이로 표시된 화면이 그려짐.]
-```
+<img width="2720" height="1680" alt="dma_cheat_architecture_diagram" src="https://github.com/user-attachments/assets/34e44ff6-40e2-416f-87fb-b11171dfe536" />
+
 
 ### 게임사는 DMA 치트에 어떻게 대응해야 하는가
 
